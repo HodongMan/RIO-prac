@@ -28,18 +28,7 @@ int main()
 	RIO_CQ ReceiveCQ				= nullptr;
 	RIO_CQ SendCQ					= nullptr;
 
-	/*
-		2. RIO_RQ Create
-		RIO_RQ is a socket descriptor used by send and receive requests with the Winsock registered I/O extensions.
-
-		RIOCreateRequestQueue function creates a registered I/O socket descriptor using a specified socket and I/O completion queues for use with the Winsock registered I/O extensions.
-	*/
-
-	RIO_RQ requestQueue				= rio.RIOCreateRequestQueue( socket, maxOutstandingReceive, maxReceiveDataBuffers, maxOutstandingSend, maxSendDataBuffers, recvQueue, sendQueue, context );
-
-
-	if (0 != ::WSAIoctl())
-
+	return 0;
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
