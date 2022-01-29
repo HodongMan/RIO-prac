@@ -142,13 +142,19 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="IEvent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="Overlapped.cpp" />
+    <ClCompile Include="TNumber.cpp" />
     <ClCompile Include="UUID.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="IEvent.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="Overlapped.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TNumber.h" />
     <ClInclude Include="TypeMagicNumber.h" />
     <ClInclude Include="UUID.h" />
   </ItemGroup>

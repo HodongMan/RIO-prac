@@ -23,6 +23,15 @@
     <ClCompile Include="Event.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="TNumber.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Message.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Overlapped.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -41,6 +50,15 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TNumber.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Overlapped.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
