@@ -144,6 +144,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Overlapped.cpp" />
+    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="Socket.cpp" />
     <ClCompile Include="TNumber.cpp" />
     <ClCompile Include="UUID.cpp" />
   </ItemGroup>
@@ -154,6 +156,8 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="Overlapped.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Session.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="TNumber.h" />
     <ClInclude Include="TypeMagicNumber.h" />
     <ClInclude Include="UUID.h" />

@@ -1,5 +1,7 @@
 #pragma once
 
+class TOverlapped;
+
 
 class ICompletionResult
 {
@@ -15,7 +17,7 @@ public:
 
 	void						reset( void ) noexcept;
 
-private:
+public:
 	ICompletionResult*			_result;
 };
 
@@ -24,6 +26,7 @@ class TIOCP
 {
 public:
 	TIOCP( void );
+	virtual ~TIOCP( void );
 
 	void						attach( HANDLE hChild ) noexcept;
 	void						flush( void ) noexcept;

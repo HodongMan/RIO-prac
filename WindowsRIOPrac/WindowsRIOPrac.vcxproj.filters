@@ -32,6 +32,12 @@
     <ClCompile Include="Overlapped.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -59,6 +65,12 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Overlapped.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

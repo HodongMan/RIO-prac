@@ -28,9 +28,17 @@ TIOCP::TIOCP( void )
 	_lastTick					= ::GetTickCount64();
 }
 
+TIOCP::~TIOCP( void )
+{
+	const BOOL result			= ::CloseHandle( _hIOCP );
+	HODONG_ASSERT( TRUE == result, "CloseHandle가 비정상 입니다. 실패한듯?" );
+
+	_hIOCP						= INVALID_HANDLE_VALUE;
+}
+
 void TIOCP::attach( HANDLE hChild ) noexcept
 {
-	HANDLE hCheck				= ::CreateIoCompletionPort( hChild, _hIOCP, 0, 0 );
+	HANDLE result				= ::CreateIoCompletionPort( hChild, _hIOCP, 0, 0 );
 	HODONG_ASSERT( NULL != _hIOCP, "CreateIoCompletionPort가 비정상 입니다. 실패한듯?" );
 }
 
@@ -65,4 +73,30 @@ bool TIOCP::flushQueue( void ) noexcept
 	DWORD byteCount				= 0;
 
 	BOOL status					= ::GetQueuedCompletionStatus( _hIOCP, &byteCount, &completionKey, &lpOverlapped, 0 );
+	
+	TOverlapped* overlapped		= reinterpret_cast<TOverlapped*>( lpOverlapped );
+
+	if ( TRUE == status )
+	{
+		HODONG_ASSERT( nullptr != overlapped->_result, "해당 경우에 nullptr이 될 수 없습니다." );
+
+		overlapped->_result->completed( status, byteCount, overlapped );
+
+		doStats();
+	}
+	else
+	{
+		if ( nullptr != lpOverlapped )
+		{
+			HODONG_ASSERT( nullptr != overlapped->_result, "해당 경우에 nullptr이 될 수 없습니다." );
+
+			overlapped->_result->completed( status, byteCount, overlapped );
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
