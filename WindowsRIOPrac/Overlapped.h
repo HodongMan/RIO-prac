@@ -1,6 +1,9 @@
 #pragma once
 
+
 class TOverlapped;
+class IEvent;
+
 
 
 class ICompletionResult
@@ -40,4 +43,29 @@ private:
 	unsigned __int64			_lastTick;
 	__int64						_completionCount;
 
+};
+
+class IIOCPEvent
+{
+public:
+	IIOCPEvent( void );
+
+	//virtual IEvent						getHandle( void ) const noexcept = 0;
+	virtual const TIOCP&				getCompletionPort( void ) const noexcept = 0;
+};
+
+
+class TIOCPEvent : public IIOCPEvent
+{
+public:
+	TIOCPEvent( void ) = delete;
+	TIOCPEvent( IEvent* completionsWaiting );
+
+
+	IEvent*								getHandle( void ) const noexcept;
+	virtual const TIOCP&				getCompletionPort( void ) const noexcept override;
+
+private:
+	TIOCP								_completionPort;
+	IEvent*								_completionsWaiting;
 };

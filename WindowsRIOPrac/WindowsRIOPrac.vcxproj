@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -144,7 +144,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Overlapped.cpp" />
+    <ClCompile Include="RIOSocket.cpp" />
     <ClCompile Include="Session.cpp" />
+    <ClCompile Include="SessionManager.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="TNumber.cpp" />
     <ClCompile Include="UUID.cpp" />
@@ -156,7 +158,9 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="Overlapped.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RIOSocket.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="SessionManager.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="TNumber.h" />
     <ClInclude Include="TypeMagicNumber.h" />

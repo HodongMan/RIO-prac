@@ -9,12 +9,14 @@
 #include <ws2tcpip.h>
 #include <mswsock.h>
 #include <Windows.h>
+#include <winnt.h>
 #include <map>
 #include <vector>
 #include <sstream>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+#include <string>
 #include <rpc.h>
 
 //////////////////////////////

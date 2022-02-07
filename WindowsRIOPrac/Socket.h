@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pch.h"
+
 
 class ISession;
 class TIOCP;
@@ -32,12 +34,29 @@ public:
 	virtual int							recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept = 0;
 };
 
-
-class IIOCPEvent
+class TWSAStartUp
 {
 public:
-	IIOCPEvent( void );
+	TWSAStartUp( void );
+	~TWSAStartUp( void );
 
-	virtual HANDLE						getHandle( void ) const noexcept = 0;
-	virtual TIOCP&						getCompletionPort( void ) const noexcept = 0;
+
+private:
+	WSADATA								_wsaData;
+};
+
+class TWinsockExtensions
+{
+public:
+	TWinsockExtensions( void ) = delete;
+	TWinsockExtensions( SOCKET socket );
+
+	bool								transmitFile( void ) noexcept;
+	bool								acceptEx( SOCKET acceptSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped ) noexcept;
+
+
+private:
+	SOCKET								_socket;
+	LPFN_TRANSMITFILE					_transmitFile;
+	LPFN_GETACCEPTEXSOCKADDRS			_lpfnGetAcceptExSockAddrs;
 };

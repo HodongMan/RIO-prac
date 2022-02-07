@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "Overlapped.h"
+#include "IEvent.h"
+
 
 TOverlapped::TOverlapped( ICompletionResult* iCompletion, HANDLE hEvent )
 	: _result{ iCompletion }
@@ -21,6 +23,7 @@ void TOverlapped::reset( void ) noexcept
 }
 
 TIOCP::TIOCP( void )
+	: _completionCount{ 0 }
 {
 	_hIOCP						= ::CreateIoCompletionPort( INVALID_HANDLE_VALUE, NULL, 0, 0 );
 	HODONG_ASSERT( NULL != _hIOCP, "CreateIoCompletionPort가 비정상 입니다. 실패한듯?" );
@@ -53,7 +56,7 @@ void TIOCP::doStats( void ) noexcept
 
 	if ( 10000 < _completionCount )
 	{
-		unsigned __int64 tick	= ::GetTickCount();
+		unsigned __int64 tick	= ::GetTickCount64();
 		double rate				= static_cast<double>( _completionCount * 1000 );
 		rate					/= static_cast<double>( tick - _lastTick );
 
@@ -99,4 +102,25 @@ bool TIOCP::flushQueue( void ) noexcept
 			return false;
 		}
 	}
+}
+
+IIOCPEvent::IIOCPEvent( void )
+{
+
+}
+
+TIOCPEvent::TIOCPEvent( IEvent* completionsWaiting )
+	: _completionsWaiting{ completionsWaiting }
+{
+	HODONG_ASSERT( nullptr != _completionsWaiting, "해당 Event를 nullptr 로 전달하는 것은 비정상 입니다." );
+}
+
+IEvent* TIOCPEvent::getHandle( void ) const noexcept
+{
+	return _completionsWaiting;
+}
+
+const TIOCP& TIOCPEvent::getCompletionPort( void ) const noexcept
+{
+	return _completionPort;
 }
