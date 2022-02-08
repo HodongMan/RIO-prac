@@ -51,12 +51,28 @@ public:
 	TWinsockExtensions( void ) = delete;
 	TWinsockExtensions( SOCKET socket );
 
-	bool								transmitFile( void ) noexcept;
+	bool								transmitFile( HANDLE hFile, DWORD nNumberOfBytesToWrite, DWORD nNumberOfBytesPerSend, LPOVERLAPPED lpOverlapped, LPTRANSMIT_FILE_BUFFERS lpTransmitBuffers, DWORD dwReserved ) noexcept;
+	bool								transmitPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD nElementCount, DWORD nSendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept;
+
 	bool								acceptEx( SOCKET acceptSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped ) noexcept;
+	bool								connectEx( const sockaddr FAR* name, int namelen, PVOID lpSendBuffer, DWORD dwSendDataLength, LPDWORD lpdwBytesSent, LPOVERLAPPED lpOverlapped ) noexcept;
+	bool								disconnectEx( LPOVERLAPPED lpOverlapped, DWORD  dwFlags, DWORD  dwReserved ) noexcept;
+
+	void								getAcceptExSockAddrs( PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, sockaddr** LocalSockaddr, LPINT LocalSockaddrLength, sockaddr** RemoteSockaddr, LPINT RemoteSockaddrLength ) const noexcept;
+	
+	int									send( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept;
+	int									send( char* buffer, unsigned long len, LPOVERLAPPED lpOverlapped ) noexcept;
+
+	int									recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept;
+	int									recv( char *buffer, unsigned long len, LPOVERLAPPED lpOverlapped ) noexcept;
 
 
 private:
 	SOCKET								_socket;
-	LPFN_TRANSMITFILE					_transmitFile;
+	LPFN_TRANSMITFILE					_lpfnTransmitFile;
+	LPFN_ACCEPTEX						_lpfnAcceptEx;
 	LPFN_GETACCEPTEXSOCKADDRS			_lpfnGetAcceptExSockAddrs;
+	LPFN_TRANSMITPACKETS				_lpfnTransmitPackets;
+	LPFN_CONNECTEX						_lpfnConnectEx;
+	LPFN_DISCONNECTEX					_lpfnDisconnectEx;
 };
