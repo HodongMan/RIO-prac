@@ -123,22 +123,42 @@ void TWinsockExtensions::getAcceptExSockAddrs( PVOID lpOutputBuffer, DWORD dwRec
 	return _lpfnGetAcceptExSockAddrs( lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength, dwRemoteAddressLength, LocalSockaddr, LocalSockaddrLength, RemoteSockaddr, RemoteSockaddrLength );
 }
 
-int TWinsockExtensions::send(LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped) noexcept
+int TWinsockExtensions::send( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept
 {
-	return 0;
+	HODONG_ASSERT( INVALID_SOCKET != _socket, "SOCKET 값이 비정상 입니다." );
+
+	return ::WSASend( _socket, lpBuffers, dwBufferCount, NULL, 0, lpOverlapped, NULL );
 }
 
 int TWinsockExtensions::send(char* buffer, unsigned long len, LPOVERLAPPED lpOverlapped) noexcept
 {
-	return 0;
+	HODONG_ASSERT( nullptr != buffer, "buffer 값이 nullptr 입니다.");
+	HODONG_ASSERT( 0 < len, "buffer size 값이 비정상 입니다.");
+
+	WSABUF wsaBuf;
+	wsaBuf.buf									= buffer;
+	wsaBuf.len									= len;
+
+	return send( &wsaBuf, 1, lpOverlapped );
 }
 
-int TWinsockExtensions::recv(LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped) noexcept
+int TWinsockExtensions::recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept
 {
-	return 0;
+	HODONG_ASSERT( INVALID_SOCKET != _socket, "SOCKET 값이 비정상 입니다." );
+	
+	DWORD flags									= 0;
+	
+	return ::WSARecv( _socket, lpBuffers, dwBufferCount, NULL, &flags, lpOverlapped, NULL );
 }
 
-int TWinsockExtensions::recv(char* buffer, unsigned long len, LPOVERLAPPED lpOverlapped) noexcept
+int TWinsockExtensions::recv( char* buffer, unsigned long len, LPOVERLAPPED lpOverlapped ) noexcept
 {
-	return 0;
+	HODONG_ASSERT( nullptr != buffer, "buffer 값이 nullptr 입니다.");
+	HODONG_ASSERT( 0 < len, "buffer size 값이 비정상 입니다.");
+
+	WSABUF wsaBuf;
+	wsaBuf.buf									= buffer;
+	wsaBuf.len									= len;
+
+	return recv( &wsaBuf, 1, lpOverlapped );
 }
