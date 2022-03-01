@@ -148,6 +148,7 @@
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="SessionManager.cpp" />
     <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="TNumber.cpp" />
     <ClCompile Include="UUID.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="Session.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="Socket.h" />
+    <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="TNumber.h" />
     <ClInclude Include="TypeMagicNumber.h" />
     <ClInclude Include="UUID.h" />

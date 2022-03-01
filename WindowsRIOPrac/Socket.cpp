@@ -162,3 +162,110 @@ int TWinsockExtensions::recv( char* buffer, unsigned long len, LPOVERLAPPED lpOv
 
 	return recv( &wsaBuf, 1, lpOverlapped );
 }
+
+TSocket::TSocket( int type, int protocol, int flags )
+{
+	_socket										= ::WSASocket( AF_INET, type, protocol, NULL, 0, flags );
+	HODONG_ASSERT( INVALID_SOCKET != _socket, "WSASocket이 실패해서 값이 비정상 입니다." );
+
+	_winsockExtensions							= new TWinsockExtensions( _socket );
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	BOOL value									= TRUE;
+
+	const int error								= ::setsockopt( _socket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<char*>( &value ), sizeof( value ) );
+	HODONG_ASSERT( SOCKET_ERROR != error, "setsockopt이 실패해서 값이 비정상 입니다." );
+}
+
+TSocket::~TSocket( void )
+{
+	delete _winsockExtensions;
+
+	_winsockExtensions							= nullptr;
+
+	const int error								= ::closesocket( _socket );
+	HODONG_ASSERT( 0 == error, "closesocket이 실패해서 값이 비정상 입니다." );
+
+	_socket										= NULL;
+}
+
+HANDLE TSocket::getHandle( void)  const noexcept
+{
+	return reinterpret_cast<HANDLE>( _socket );
+}
+
+SOCKET TSocket::getSocket( void ) const noexcept
+{
+	return _socket;
+}
+
+std::string TSocket::getName( void ) const noexcept
+{
+	return std::string();
+}
+
+std::string TSocket::getPeerName( void ) const noexcept
+{
+	return std::string();
+}
+
+ISession* TSocket::getSessionConnected( void ) const noexcept
+{
+	return _session;
+}
+
+bool TSocket::transmitFile( HANDLE hFile, DWORD numberOfBytesToWrite, DWORD numberOfBytesPerSend, LPOVERLAPPED lpOverlapped, LPTRANSMIT_FILE_BUFFERS lpTransmitBuffers, DWORD dwReserved ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->transmitFile( hFile, numberOfBytesToWrite, numberOfBytesPerSend, lpOverlapped, lpTransmitBuffers, dwReserved );
+}
+
+bool TSocket::acceptEx( SOCKET acceptSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->acceptEx( acceptSocket, lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength, dwRemoteAddressLength, lpdwBytesReceived, lpOverlapped );
+}
+
+void TSocket::getAcceptExSocketAddress( PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, sockaddr** localSockAddr, LPINT localSockAddrLength, sockaddr** remoteSockAddr, LPINT remoteSockAddrLength ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->getAcceptExSockAddrs( lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength, dwRemoteAddressLength, localSockAddr, localSockAddrLength, remoteSockAddr, remoteSockAddrLength );
+}
+
+bool TSocket::transmitdPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD elementCount, DWORD sendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->transmitPacket( lpPacketArray, elementCount, sendSize, lpOverlapped, dwFlags );
+}
+
+bool TSocket::connectEx( const sockaddr* name, int nameLength, PVOID lpSendBuffer, DWORD dwSendDataLength, LPDWORD lpdwBytesSent, LPOVERLAPPED lpOverlapped ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->connectEx( name, nameLength, lpSendBuffer, dwSendDataLength, lpdwBytesSent, lpOverlapped );
+}
+
+bool TSocket::disconnectEx( LPOVERLAPPED lpOverlapped, DWORD  dwFlags, DWORD  dwReserved ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->disconnectEx( lpOverlapped, dwFlags, dwReserved );
+}
+
+int TSocket::send( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->send( lpBuffers, dwBufferCount, lpOverlapped );
+}
+
+int TSocket::recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept
+{
+	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
+
+	return _winsockExtensions->recv( lpBuffers, dwBufferCount, lpOverlapped );
+}

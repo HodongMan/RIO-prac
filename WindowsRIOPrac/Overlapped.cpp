@@ -2,6 +2,7 @@
 
 #include "Overlapped.h"
 #include "IEvent.h"
+#include "TCPSocket.h"
 
 
 TOverlapped::TOverlapped( ICompletionResult* iCompletion, HANDLE hEvent )
@@ -123,4 +124,29 @@ IEvent* TIOCPEvent::getHandle( void ) const noexcept
 const TIOCP& TIOCPEvent::getCompletionPort( void ) const noexcept
 {
 	return _completionPort;
+}
+
+TOverlappedRecv::TOverlappedRecv( ICompletionResult* completionResult, HANDLE event )
+	: TOverlapped( completionResult, event )
+{
+
+}
+
+TOverlappedSend::TOverlappedSend( ICompletionResult* completionResult, HANDLE event )
+	: TOverlapped( completionResult, event )
+{
+
+}
+
+TOverlappedListener::TOverlappedListener( ICompletionResult* completionResult, HANDLE event )
+	: TOverlapped( completionResult, event )
+	, _byteCount{ 0 }
+	, _addressBuffer{ 2 * AddressReserve }
+{
+	_acceptee									= new TCPSocket();
+}
+
+TOverlappedListener::~TOverlappedListener( void )
+{
+
 }

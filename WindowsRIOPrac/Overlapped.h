@@ -1,9 +1,12 @@
 #pragma once
 
 
+#include "TypeMagicNumber.h"
+
+
 class TOverlapped;
 class IEvent;
-
+class TSocket;
 
 
 class ICompletionResult
@@ -68,4 +71,42 @@ public:
 private:
 	TIOCP								_completionPort;
 	IEvent*								_completionsWaiting;
+};
+
+
+class TOverlappedRecv : public TOverlapped
+{
+public:
+	TOverlappedRecv( void ) = delete;
+	TOverlappedRecv( ICompletionResult* completionResult, HANDLE event );
+};
+
+
+class TOverlappedSend : public TOverlapped
+{
+public:
+	TOverlappedSend( void ) = delete;
+	TOverlappedSend( ICompletionResult* completionResult, HANDLE event );
+};
+
+class TOverlappedListener : public TOverlapped
+{
+public:
+	const int							AddressReserve			= sizeof( SOCKADDR_IN ) + 16;
+
+public:
+	TOverlappedListener( void ) = delete;
+	TOverlappedListener( ICompletionResult* completionResult, HANDLE event );
+	~TOverlappedListener( void );
+
+public:
+	TBytes								_addressBuffer;
+	DWORD								_byteCount;
+	TSocket*							_acceptee;
+};
+
+
+class TAcceptEx : public ICompletionResult 
+{
+
 };

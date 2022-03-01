@@ -38,6 +38,15 @@
     <ClCompile Include="Socket.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="RIOSocket.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -71,6 +80,15 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Socket.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="RIOSocket.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
