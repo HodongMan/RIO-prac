@@ -148,5 +148,17 @@ TOverlappedListener::TOverlappedListener( ICompletionResult* completionResult, H
 
 TOverlappedListener::~TOverlappedListener( void )
 {
+	delete _acceptee;
+}
 
+TAcceptEx::TAcceptEx(IIOCPEvent* iocp, std::string intfc, short port, int depth)
+{
+}
+
+void TAcceptEx::postAccept(void) noexcept
+{
+}
+
+void TAcceptEx::completed(BOOL status, DWORD byteCount, TOverlapped* overlapped) noexcept
+{
 }

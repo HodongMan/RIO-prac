@@ -235,7 +235,7 @@ void TSocket::getAcceptExSocketAddress( PVOID lpOutputBuffer, DWORD dwReceiveDat
 	return _winsockExtensions->getAcceptExSockAddrs( lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength, dwRemoteAddressLength, localSockAddr, localSockAddrLength, remoteSockAddr, remoteSockAddrLength );
 }
 
-bool TSocket::transmitdPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD elementCount, DWORD sendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept
+bool TSocket::transmitPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD elementCount, DWORD sendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept
 {
 	HODONG_ASSERT( nullptr != _winsockExtensions, "TWinsockExtensions 메모리 할당이 실패해서 비정상 입니다." );
 

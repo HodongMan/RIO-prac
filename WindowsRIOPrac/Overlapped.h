@@ -6,13 +6,13 @@
 
 class TOverlapped;
 class IEvent;
-class TSocket;
+class ISocket;
 
 
 class ICompletionResult
 {
 public:
-	virtual void completed( BOOL status, DWORD byteCount, TOverlapped* overlapped ) = 0;
+	virtual void completed( BOOL status, DWORD byteCount, TOverlapped* overlapped ) noexcept = 0;
 };
 
 
@@ -92,7 +92,7 @@ public:
 class TOverlappedListener : public TOverlapped
 {
 public:
-	const int							AddressReserve			= sizeof( SOCKADDR_IN ) + 16;
+	const unsigned char					AddressReserve			= sizeof( SOCKADDR_IN ) + 16;
 
 public:
 	TOverlappedListener( void ) = delete;
@@ -102,11 +102,20 @@ public:
 public:
 	TBytes								_addressBuffer;
 	DWORD								_byteCount;
-	TSocket*							_acceptee;
+	ISocket*							_acceptee;
 };
 
 
 class TAcceptEx : public ICompletionResult 
 {
+public:
+	TAcceptEx( IIOCPEvent* iocp, std::string intfc, short port, int depth );
 
+	void								postAccept( void ) noexcept;
+private:
+	virtual void						completed( BOOL status, DWORD byteCount, TOverlapped* overlapped ) noexcept override;
+private:
+
+	ISocket*							_accepter;
+	IIOCPEvent*							_iocp;
 };

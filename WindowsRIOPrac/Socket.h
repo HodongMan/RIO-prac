@@ -28,7 +28,7 @@ public:
 	virtual bool						transmitPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD elementCount, DWORD sendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept = 0;
 	virtual bool						connectEx( const struct sockaddr FAR* name, int nameLength, PVOID lpSendBuffer, DWORD dwSendDataLength, LPDWORD lpdwBytesSent, LPOVERLAPPED lpOverlapped ) noexcept = 0;
 
-	virtual bool						disconnectEx( const struct sockaddr FAR* name ) noexcept = 0;
+	virtual bool						disconnectEx( LPOVERLAPPED lpOverlapped, DWORD  dwFlags, DWORD  dwReserved ) noexcept = 0;
 
 	virtual int							send( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept = 0;
 	virtual int							recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept = 0;
@@ -94,16 +94,16 @@ public:
 	virtual ISession*					getSessionConnected( void ) const noexcept;
 
 
-	virtual bool						transmitFile( HANDLE hFile, DWORD numberOfBytesToWrite, DWORD numberOfBytesPerSend, LPOVERLAPPED lpOverlapped, LPTRANSMIT_FILE_BUFFERS lpTransmitBuffers, DWORD dwReserved ) noexcept;
-	virtual bool						acceptEx( SOCKET acceptSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped ) noexcept;
-	virtual void						getAcceptExSocketAddress( PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, struct sockaddr** localSockAddr, LPINT localSockAddrLength, struct sockaddr** remoteSockAddr, LPINT remoteSockAddrLength ) noexcept;
-	virtual bool						transmitdPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD elementCount, DWORD sendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept;
-	virtual bool						connectEx( const struct sockaddr FAR* name, int nameLength, PVOID lpSendBuffer, DWORD dwSendDataLength, LPDWORD lpdwBytesSent, LPOVERLAPPED lpOverlapped ) noexcept;
+	virtual bool						transmitFile( HANDLE hFile, DWORD numberOfBytesToWrite, DWORD numberOfBytesPerSend, LPOVERLAPPED lpOverlapped, LPTRANSMIT_FILE_BUFFERS lpTransmitBuffers, DWORD dwReserved ) noexcept override;
+	virtual bool						acceptEx( SOCKET acceptSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped ) noexcept override;
+	virtual void						getAcceptExSocketAddress( PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, struct sockaddr** localSockAddr, LPINT localSockAddrLength, struct sockaddr** remoteSockAddr, LPINT remoteSockAddrLength ) noexcept override;
+	virtual bool						transmitPacket( LPTRANSMIT_PACKETS_ELEMENT lpPacketArray, DWORD elementCount, DWORD sendSize, LPOVERLAPPED lpOverlapped, DWORD dwFlags ) noexcept override;
+	virtual bool						connectEx( const struct sockaddr FAR* name, int nameLength, PVOID lpSendBuffer, DWORD dwSendDataLength, LPDWORD lpdwBytesSent, LPOVERLAPPED lpOverlapped ) noexcept override;
 
-	virtual bool						disconnectEx( LPOVERLAPPED lpOverlapped, DWORD  dwFlags, DWORD  dwReserved ) noexcept;
+	virtual bool						disconnectEx( LPOVERLAPPED lpOverlapped, DWORD  dwFlags, DWORD  dwReserved ) noexcept override;
 
-	virtual int							send( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept;
-	virtual int							recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept;
+	virtual int							send( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept override;
+	virtual int							recv( LPWSABUF lpBuffers, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped ) noexcept override;
 
 
 private:
