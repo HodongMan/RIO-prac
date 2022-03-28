@@ -53,7 +53,7 @@ class IIOCPEvent
 public:
 	IIOCPEvent( void );
 
-	//virtual IEvent						getHandle( void ) const noexcept = 0;
+	virtual IEvent*						getHandle( void ) const noexcept = 0;
 	virtual const TIOCP&				getCompletionPort( void ) const noexcept = 0;
 };
 
@@ -65,8 +65,9 @@ public:
 	TIOCPEvent( IEvent* completionsWaiting );
 
 
-	IEvent*								getHandle( void ) const noexcept;
+	virtual IEvent*						getHandle( void ) const noexcept;
 	virtual const TIOCP&				getCompletionPort( void ) const noexcept override;
+	TIOCP& getCompletionPort( void ) noexcept;
 
 private:
 	TIOCP								_completionPort;
@@ -92,7 +93,7 @@ public:
 class TOverlappedListener : public TOverlapped
 {
 public:
-	const unsigned char					AddressReserve			= sizeof( SOCKADDR_IN ) + 16;
+	static const unsigned char			AddressReserve			= sizeof( SOCKADDR_IN ) + 16;
 
 public:
 	TOverlappedListener( void ) = delete;
@@ -109,13 +110,35 @@ public:
 class TAcceptEx : public ICompletionResult 
 {
 public:
-	TAcceptEx( IIOCPEvent* iocp, std::string intfc, short port, int depth );
+	TAcceptEx( void ) = delete;
+	TAcceptEx( IIOCPEvent* iocp, std::string& intfc, short port, int depth );
 
 	void								postAccept( void ) noexcept;
+	virtual void						accepted( BOOL status, ISocket* socket ) noexcept = 0;
 private:
 	virtual void						completed( BOOL status, DWORD byteCount, TOverlapped* overlapped ) noexcept override;
 private:
 
 	ISocket*							_accepter;
 	IIOCPEvent*							_iocp;
+};
+
+
+class TConnectionEx : public ICompletionResult
+{
+public:
+	TConnectionEx( void ) = delete;
+	TConnectionEx( IIOCPEvent* iocp, std::string& intfc, std::string& remote, short port );
+
+	ISocket*							getSocket( void ) const noexcept;
+
+private:
+	virtual void						completed( BOOL status, DWORD byteCount, TOverlapped* overlapped ) noexcept override;
+protected:
+	virtual void						connected( BOOL status, ISocket* socket ) noexcept = 0;
+
+private:
+	ISocket*							_connector;
+	IIOCPEvent*							_iocp;
+	TOverlapped*						_connectNotify;
 };
